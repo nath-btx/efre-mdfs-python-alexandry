@@ -36,17 +36,17 @@ export default function BookCard(props){
     return(
         <div key={props.id} className="mission-card">
             <div className="card-body">
-                <div className="upper">
+                <div className="form-box">
                     <form>
                         <label>
-                            Titre :
-                            <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                            Ajouter un livre
                         </label>
-                        <input type="text" name="title" value={author} onChange={(e) => setAuthor(e.target.value)} />
-                        <input type="text" name="title" value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <input placeholder="Titre" type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <input placeholder="Auteur" type="text" name="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+                        <textarea placeholder="Description" type="text" name="description" value={description} onChange={(e) => setDescription(e.target.value)} />
 
 
-                        <input type="submit" onClick={() => addBook} />
+                        <input disabled={title === '' || author === '' || description=== ''}class="submit" type="submit" onClick={() => addBook()} />
                     </form>
                 </div>
             </div>

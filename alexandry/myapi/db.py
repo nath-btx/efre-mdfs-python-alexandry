@@ -17,7 +17,7 @@ def addBook(request):
         print("Opened database")
 
         create_table_query = '''CREATE TABLE IF NOT EXISTS BOOK(
-                            id INT PRIMARY KEY NOT NULL,
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
                             title TEXT NOT NULL,
                             author TEXT NOT NULL);'''
         
@@ -25,11 +25,11 @@ def addBook(request):
         cursor.execute(create_table_query)
 
         insert_with_param = """INSERT INTO 'BOOK'
-                            ('id', 'title', 'author')
-                            VALUES(?,?,?);"""
+                            ('title', 'author')
+                            VALUES(?,?);"""
 
-        data_tuple = (id, title, author)
-        cursor.execute(insert_with_param, data_tuple)
+        data = (title, author)
+        cursor.execute(insert_with_param, data)
         sqliteConnection.commit()
         print("Book added successfully")
         return Response({"message":"Book succesfully added"}, status=status.HTTP_200_OK)
@@ -99,26 +99,28 @@ def deleteBook(request):
             print('sqlite connection closed')
 
 
-
-def updateBook(id, title):
+@api_view(['PUT'])
+def updateBook(request):
     try:
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
         print("Opened database")
-        update_query = """Update BOOK 
-                        set title = ? 
-                        where id = ?"""
-        data = (id, title)
+        update_query = """UPDATE BOOK 
+                        SET title = ?, author = ?
+                        WHERE id = ?"""
+
+        data = (request.data.get('title'), request.data.get('author'), request.data.get('id'))
+        print(data)
         cursor.execute(update_query, data)
+        sqliteConnection.commit()
         print("Book updated")
-
-
-
-        
+        return Response('Updated', status.HTTP_200_OK)
 
 
     except sqlite3.Error as error:
         print("Error while working with SQLite : ", error)
+        return Response('couldn\'t Update', status.HTTP_400_BAD_REQUEST)
+
     finally:
         if sqliteConnection:
             sqliteConnection.close()

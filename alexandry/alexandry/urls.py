@@ -20,5 +20,6 @@ from myapi import db
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/getBooks', db.getBooks),
-    path('api/addBook', db.addBook)
+    path('api/addBook', db.addBook),
+    path('api/deleteBook', db.deleteBook)
 ]

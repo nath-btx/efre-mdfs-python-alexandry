@@ -78,6 +78,26 @@ def getBooks(request):
             print("sqlite connection is closed")
 
 
+@api_view(['DELETE'])
+def deleteBook(request):
+    try:
+        sqliteConnection = sqlite3.connect('books.db')
+        cursor = sqliteConnection.cursor()
+        print('Opened Database')
+        delete_query = """  Delete from BOOK
+                            where id = ?"""
+        cursor.execute(delete_query,request.data.get('id'))
+        sqliteConnection.commit()
+        print('Book deleted')
+        return Response('Deleted', status.HTTP_200_OK)
+    except:
+        print('couldn\'t delete')
+        return Response('couldn\'t delete', status.HTTP_400_BAD_REQUEST)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            print('sqlite connection closed')
+
 
 
 def updateBook(id, title):
@@ -103,14 +123,3 @@ def updateBook(id, title):
         if sqliteConnection:
             sqliteConnection.close()
             print("sqlite connection is closed")
-
-
-# addBook(1,"Hunger Games", "Suzanne Collins")
-# addBook(2,"Le Rouge et le Noir", "Stendhal")
-# addBook(3,"L'Oeuvre au Noir", "Marguerite Yourcenar")
-# getBooks()
-# updateBook(1,"Jeu de la faim")
-# getBooks()
-
-
-

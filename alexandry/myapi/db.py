@@ -1,6 +1,10 @@
 #!/usr/bin/python
 
+from os import stat
 import sqlite3
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
 def addBook(id,title,author):
@@ -33,10 +37,10 @@ def addBook(id,title,author):
             sqliteConnection.close()
             print("sqlite connection is closed")
 
-
-
-def getBooks():
+@api_view(['GET'])
+def getBooks(request):
     try:
+        print(request)
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
         print("Opened database")
@@ -47,6 +51,8 @@ def getBooks():
         records = cursor.fetchall()
         print("fetched")
         print(records)
+        cursor.close()
+        return Response(records)
         # for row in records:
         #     id = row[0]
         #     title=row[1]
@@ -55,7 +61,6 @@ def getBooks():
         #     print("title = ", title)
         #     print("author = ", author)
         #     print(" ")
-        cursor.close()
 
 
     except sqlite3.Error as error:
@@ -73,13 +78,16 @@ def updateBook(id, title):
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
         print("Opened database")
-        
-        
-        update_query = """Update BOOK set title = ? where id = ?"""
-        data = (title, id)
+        update_query = """Update BOOK 
+                        set title = ? 
+                        where id = ?"""
+        data = (id, title)
         cursor.execute(update_query, data)
-        sqliteConnection.commit()
         print("Book updated")
+
+
+
+        
 
 
     except sqlite3.Error as error:
@@ -90,10 +98,10 @@ def updateBook(id, title):
             print("sqlite connection is closed")
 
 
-addBook(1,"Hunger Games", "Suzanne Collins")
-addBook(2,"Le Rouge et le Noir", "Stendhal")
-addBook(3,"L'Oeuvre au Noir", "Marguerite Yourcenar")
-getBooks()
+# addBook(1,"Hunger Games", "Suzanne Collins")
+# addBook(2,"Le Rouge et le Noir", "Stendhal")
+# addBook(3,"L'Oeuvre au Noir", "Marguerite Yourcenar")
+# getBooks()
 # updateBook(1,"Jeu de la faim")
 # getBooks()
 

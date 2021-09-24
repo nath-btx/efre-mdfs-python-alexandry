@@ -88,16 +88,14 @@ def deleteBook(request):
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
         print('Opened Database')
-        delete_query = """  Delete from BOOK
-                            where id = ?"""
-        
-        cursor.execute(delete_query,request.data.get('id'))
+        cursor.execute("""  Delete from BOOK
+                            where id = ?""",(request.data.get('id'),))
         sqliteConnection.commit()
         print('Book deleted')
         return Response('Deleted', status.HTTP_200_OK)
-    except:
-        print('couldn\'t delete')
-        return Response('couldn\'t delete', status.HTTP_400_BAD_REQUEST)
+    except sqlite3.Error as error:
+        print("Error while working with SQLite : ", error)
+        return Response('couldn\'t Update', status.HTTP_400_BAD_REQUEST)
     finally:
         if sqliteConnection:
             sqliteConnection.close()
@@ -114,7 +112,7 @@ def updateBook(request):
                         SET title = ?, author = ?, description = ?
                         WHERE id = ?"""
 
-        data = (request.data.get('title'), request.data.get('author'),request.data.get('description'), request.data.get('id'))
+        data = (request.data.get('title'), request.data.get('author'),request.data.get('description'), (request.data.get('id'),))
         print(data)
         cursor.execute(update_query, data)
         sqliteConnection.commit()

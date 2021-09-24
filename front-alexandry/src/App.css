@@ -8,7 +8,7 @@
     width:90vw;
     margin:auto;
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-gap:10% 5%;
 }
 .mission-card{
@@ -24,6 +24,7 @@
 h1,h2{
     -webkit-line-clamp: 1;
     margin-left:-10px !important;
+    padding-right:15px;
 }
 p{
     -webkit-line-clamp: 5;
@@ -34,6 +35,7 @@ h1, h2, p{
     display: -webkit-box;
     -webkit-box-orient: vertical;  
     overflow: hidden;;
+    
 }
 .icon{
     position:relative;

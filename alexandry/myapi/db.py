@@ -6,8 +6,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-
-def addBook(id,title,author):
+@api_view(['POST'])
+def addBook(request):
+    id = request.data.get('id')
+    author = request.data.get('author')
+    title = request.data.get('title')
     try:
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
@@ -29,13 +32,17 @@ def addBook(id,title,author):
         cursor.execute(insert_with_param, data_tuple)
         sqliteConnection.commit()
         print("Book added successfully")
+        return Response({"message":"Book succesfully added"}, status=status.HTTP_200_OK)
 
     except sqlite3.Error as error:
-        print("Error while working with SQLite : ", error)
+        print("Error while working with SQLite : ", error)        
+        return Response("problem while adding book", status=status.HTTP_400_BAD_REQUEST)
     finally:
         if sqliteConnection:
             sqliteConnection.close()
             print("sqlite connection is closed")
+
+
 
 @api_view(['GET'])
 def getBooks(request):

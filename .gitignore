@@ -6,7 +6,7 @@ __pycache__/
 *.so
 
 #DB
-.db
+*.db
 # Distribution / packaging
 .Python
 build/

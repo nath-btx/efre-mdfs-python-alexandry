@@ -73,16 +73,13 @@ def updateBook(id, title):
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
         print("Opened database")
-        update_query = """Update BOOK 
-                        set title = ? 
-                        where id = ?"""
-        data = (id, title)
-        cursor.execute(update_query, data)
-        print("Book updated")
-
-
-
         
+        
+        update_query = """Update BOOK set title = ? where id = ?"""
+        data = (title, id)
+        cursor.execute(update_query, data)
+        sqliteConnection.commit()
+        print("Book updated")
 
 
     except sqlite3.Error as error:

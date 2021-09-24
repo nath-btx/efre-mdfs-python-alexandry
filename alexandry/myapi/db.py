@@ -91,7 +91,8 @@ def deleteBook(request):
         delete_query = """  Delete from BOOK
                             where id = ?"""
         
-        cursor.execute(delete_query,(request.data.get('id')))
+        cursor.execute("""  Delete from BOOK
+                            where id = ?""",(request.data.get('id'),))
         sqliteConnection.commit()
         print('Book deleted')
         return Response('Deleted', status.HTTP_200_OK)

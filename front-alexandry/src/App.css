@@ -1,38 +1,68 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.cards{
+    min-height:100vh;
+    width: 100%;
+    background-color:#f4f8fa;   
 }
+.cards-list{
+    width:90vw;
+    margin:auto;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap:10% 5%;
+}
+.mission-card{
+    padding:25px;
+    background:#fff;
+    border-radius:50px;
+    box-shadow: 6px 8px 6px -6px rgba(16, 15, 15, 0.1);
+}
+.card-body{
+    padding:25px 50px;
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+}
+h1,h2{
+    -webkit-line-clamp: 1;
+    margin-left:-10px !important;
+}
+p{
+    -webkit-line-clamp: 5;
+}
+h1, h2, p{    
+    height:fit-content;
+    margin:auto 0px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;;
+}
+.icon{
+    position:relative;
+}
+.remove {
+    position: absolute;
+    right:0px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  .remove:hover {
+    opacity: 1;
   }
-  to {
-    transform: rotate(360deg);
+  .remove:before, .remove:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
   }
-}
+  .remove:before:hover, .remove:after:hover{
+      background-color:red;
+  }
+  .remove:before {
+    transform: rotate(45deg);
+  }
+  .remove:after {
+    transform: rotate(-45deg);
+  }

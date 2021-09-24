@@ -1,3 +1,5 @@
 # efrei-mdfs-python-alexandry
 
-python3 -m venv alexandry
+
+# installations
+    pip install -r requirements.txt

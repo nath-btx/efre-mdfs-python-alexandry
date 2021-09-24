@@ -6,7 +6,6 @@ __pycache__/
 *.so
 
 #venv
-alexandry
 
 # Distribution / packaging
 .Python

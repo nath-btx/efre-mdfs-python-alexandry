@@ -61,7 +61,7 @@ def getBooks(request):
         records = cursor.fetchall()
 
         print("fetched")
-        print(records)
+        # print(records)
         cursor.close()
         return Response(records)
         # for row in records:

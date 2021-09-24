@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import BookCard from "./BookCard"
+import AddView from "./AddView"
 
 export default function CardView(){    
     const [books, setBooks] = useState([])
@@ -24,6 +25,7 @@ export default function CardView(){
                 </div>
             ) : (
                 <div className="cards-list">
+                    <AddView/>
                     {books.map((book, index) =>
                             <BookCard 
                                 key={index}

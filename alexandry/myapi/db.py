@@ -88,9 +88,6 @@ def deleteBook(request):
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
         print('Opened Database')
-        delete_query = """  Delete from BOOK
-                            where id = ?"""
-        
         cursor.execute("""  Delete from BOOK
                             where id = ?""",(request.data.get('id'),))
         sqliteConnection.commit()
@@ -115,7 +112,7 @@ def updateBook(request):
                         SET title = ?, author = ?, description = ?
                         WHERE id = ?"""
 
-        data = (request.data.get('title'), request.data.get('author'),request.data.get('description'), request.data.get('id'))
+        data = (request.data.get('title'), request.data.get('author'),request.data.get('description'), (request.data.get('id'),))
         print(data)
         cursor.execute(update_query, data)
         sqliteConnection.commit()

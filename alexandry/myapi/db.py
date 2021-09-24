@@ -8,27 +8,31 @@ from rest_framework.decorators import api_view
 
 @api_view(['POST'])
 def addBook(request):
-    id = request.data.get('id')
     author = request.data.get('author')
     title = request.data.get('title')
+    description = request.data.get('description')
+    if (description is None):
+        description = "No description"
+
     try:
         sqliteConnection = sqlite3.connect('books.db')
         cursor = sqliteConnection.cursor()
         print("Opened database")
 
-        create_table_query = '''CREATE TABLE IF NOT EXISTS BOOK(
+        create_table_query = """CREATE TABLE IF NOT EXISTS BOOK(
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             title TEXT NOT NULL,
-                            author TEXT NOT NULL);'''
+                            author TEXT NOT NULL,
+                            description TEXT);"""
         
         cursor = sqliteConnection.cursor()
         cursor.execute(create_table_query)
 
         insert_with_param = """INSERT INTO 'BOOK'
-                            ('title', 'author')
-                            VALUES(?,?);"""
+                            ('title', 'author', 'description')
+                            VALUES(?,?,?);"""
 
-        data = (title, author)
+        data = (title, author, description)
         cursor.execute(insert_with_param, data)
         sqliteConnection.commit()
         print("Book added successfully")
@@ -52,10 +56,10 @@ def getBooks(request):
         cursor = sqliteConnection.cursor()
         print("Opened database")
 
-        select_query = """SELECT id, title, author from BOOK"""
+        select_query = """SELECT id, title, author, description from BOOK"""
         cursor.execute(select_query)
-
         records = cursor.fetchall()
+
         print("fetched")
         print(records)
         cursor.close()
@@ -106,10 +110,10 @@ def updateBook(request):
         cursor = sqliteConnection.cursor()
         print("Opened database")
         update_query = """UPDATE BOOK 
-                        SET title = ?, author = ?
+                        SET title = ?, author = ?, description = ?
                         WHERE id = ?"""
 
-        data = (request.data.get('title'), request.data.get('author'), request.data.get('id'))
+        data = (request.data.get('title'), request.data.get('author'),request.data.get('description'), request.data.get('id'))
         print(data)
         cursor.execute(update_query, data)
         sqliteConnection.commit()
@@ -125,3 +129,4 @@ def updateBook(request):
         if sqliteConnection:
             sqliteConnection.close()
             print("sqlite connection is closed")
+
